@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+
+<html ng-app="app">
+
+    <head>
+        <meta charset="utf-8" />
+        <title>EXEMPLE ANGULAR EXPRESS</title>
+    </head>
+
+    <body>
+
+	    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.25/angular.min.js"></script>
+	    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.25/angular-route.min.js"></script>
+	    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.25/angular-resource.min.js"></script>
+
+        <header>
+            <h1>TABLE : "TEST"</h1>
+        </header>
+
+        <section>
+
+			<ng-view></ng-view>
+
+			<script type="text/ng-template" id="/tests.html">
+
+			  <h3><u>List :</u></h3>
+				  Search: <input type="text" ng-model="search.donnee">
+				  <ul>
+					<li ng-repeat="test in tests | filter: search">
+					  <div><button ng-click="select($index)">Select</button><b> {{test.donnee}}</b></div>
+					</li>
+				  </ul>
+				<br>
+			  <h3><u>Detail :</u></h3>
+				  <table>
+				    <tr>
+				     <td>Id :</td><td>{{test.id}}</td>
+					</tr>
+				    <tr>
+				     <td>Donnees :</td><td><input type="text" ng-model="test.donnee"></td>
+					</tr>
+					<tr>
+				     <td>Valeur :</td><td><input type="text" ng-model="test.valeur"></td>
+					</tr>
+					<tr>
+				     <td></td><td>
+				     				<button ng-model="test" ng-click="clear()">Clear</button>
+				     				<button ng-model="test" ng-click="save()">Create</button>
+				     				<button ng-click="update(test.id)">Update</button>
+				     				<button ng-click="delete(test.id)">Delete</button></td>
+					</tr>
+				  </table>
+
+			</script>
+
+			<script>
+
+			  angular.module('app', ['ngRoute', 'ngResource'])
+
+				// SERVICES
+
+				.factory('Tests', ['$resource', function($resource){
+				  return $resource('rest/tests/:id', null, {
+					  'update': { method:'PUT' }
+				  });
+				}])
+
+				// CONTROLLERS
+
+        		.controller('TestsController', ['$scope', '$routeParams', 'Tests', '$location', function ($scope, $routeParams, Tests, $location) {
+
+				  $scope.tests = Tests.query();
+
+				  $scope.select = function(index) {
+					  								$scope.index = index;
+					  								$scope.test = $scope.tests[index];
+				  }
+				  $scope.save = function(){
+					  						var nouveauTest = new Tests({ donnee: $scope.test.donnee, valeur: $scope.test.valeur });
+            								nouveauTest.$save(function(){
+              																$scope.tests = Tests.query();
+              																$scope.clear()
+            								});
+				  }
+
+				  $scope.update = function(id){
+					Tests.update({id: $scope.test.id}, $scope.test);
+					$scope.tests.splice(id, 1);
+              		$scope.clear()
+				  }
+
+				  $scope.delete = function(id){
+					if($scope.test.id == '' || $scope.test.id == 'undefined') {
+						Tests.remove({id: $scope.test.id}, function(){
+							$scope.tests.splice($scope.index, 1);
+							$scope.clear()
+						});
+					} else {
+						alert("For deleteing, first clear the Detail section with Clear Button");
+					}
+
+				  }
+
+				  $scope.clear = function() {
+									$scope.test = undefined;
+									$scope.index = undefined;
+			  	  }
+
+				}])
+
+				// ROUTES ANGULAR
+
+				.config(['$routeProvider', function ($routeProvider) {
+
+				  $routeProvider
+
+					.when('/', {
+					  templateUrl: '/tests.html',
+					  controller: 'TestsController'
+					})
+
+				}]);
+
+			</script>
+
+        </section>
+
+    </body>
+</html>

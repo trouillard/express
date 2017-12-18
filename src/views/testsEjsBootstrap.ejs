@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+        <meta charset="UTF-8">
+        <title>TEST EJS BOOTSTRAP REACT</title>
+        <link rel="stylesheet" href="/static/css/jquery-ui.css">
+		<link rel="stylesheet" href="/static/css/style.css">
+		<link rel="stylesheet" href="/static/css/styledatepicker.css">
+		<link rel="stylesheet" href="/static/css/controlgroup.css">
+		<link rel="stylesheet" href="/static/css/bootstrap.min.css">
+		<link rel="stylesheet" href="/static/css/jqueryui-autocomplete-bootstrap.css" type="text/css" media="all">
+        <script src="/static/js/jquery.js"></script>
+        <script src="/static/js/jquery-ui.js"></script>
+        <script src="/static/js/dst.js"></script>
+        <script src="/static/js/jqueryui-autocomplete-bootstrap-min.js"></script>
+    </head>
+
+    <body>
+
+ <table>
+  <tr>
+   <td>
+	<div class="widget">
+	  <h1>DST - Synth&egravese</h1>
+	  <fieldset>
+	    <legend>R&eacutef&eacuterence</legend>
+	    <div class="controlgroup">
+		 <input
+			class="bs-autocomplete"
+			id="reference_pays_HTML"
+			value=""
+			placeholder=""
+			type="text"
+			data-source="http://localhost:3000/zonesListAutocomplete"
+			data-hidden_field_id="id"
+			data-item_id="id"
+			data-item_label="nom"
+			autocomplete="off"
+			size="35"
+		  >
+		<input type="text" size="5" id="reference_heures" value ="23:59" name="reference_heures">
+		<input type="text" size="10" id="reference_datepicker" value ="01/01/2018" name="reference_datepicker">
+	    </div>
+	  </fieldset>
+	</div>
+    </td>
+   </tr>
+   <tr>
+    <td>
+	  <fieldset>
+	    <div class="widget">
+	    <legend>Distant</legend>
+	    <div class="controlgroup">
+			<input
+				class="bs-autocomplete"
+				id="distant_pays_HTML"
+				value=""
+				placeholder=""
+				type="text"
+				data-source="http://localhost:3000/zonesListAutocomplete"
+				data-hidden_field_id="id"
+				data-item_id="id"
+				data-item_label="nom"
+				autocomplete="off"
+				size="35"
+		>
+	      <input type="text" size="5" id="distant_heures" value ="23:59" name="distant_heures">
+	      <input type="text" size="10" id="distant_datepicker" value ="01/01/2018" name="distant_datepicker">
+	    </div>
+	</fieldset>
+      </div>
+    </td>
+   </tr>
+ </table>
+
+
+		 <script type="text/javascript" src="/static/js/jqueryui-autocomplete-bootstrap-min.js"></script>
+
+    </body>
+
+</html>

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+  <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>DST</title>
+		<link rel="stylesheet" href="/static/css/jquery-ui.css">
+		<link rel="stylesheet" href="/static/css/bootstrap.min.css">
+		<script src="/static/js/jquery.js"></script>
+		<script src="/static/js/jquery-ui.js"></script><link rel="stylesheet" href="/static/css/styledatepicker.css"></link>
+		<link rel="stylesheet" href="/static/css/jqueryui-autocomplete-bootstrap.css" type="text/css" media="all"></link>
+	    <script>
+		  $( function() {
+			$( "#dialog" ).dialog();
+			$( "#reference_datepicker" ).datepicker({defaultDate: new Date()});
+			$( "#distant_datepicker" ).datepicker({defaultDate: new Date()});
+			$( ".controlgroup" ).controlgroup()
+			$( ".controlgroup-vertical" ).controlgroup({
+			  "direction": "vertical"
+			});
+	       }
+	      );
+	   </script>
+  </head>
+
+  <body>
+
+	<div id="main">
+		<%- markup -%>
+	</div>
+
+	<script src="/static/js/jqueryui-autocomplete-bootstrap-min.js"></script>
+
+  </body>
+</html>

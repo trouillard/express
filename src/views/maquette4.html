@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="latin1">
+  <title>DST - Synthèse</title>
+
+  <link rel="stylesheet" href="jquery-ui/jquery-ui.css">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="styledatepicker.css">
+  <link rel="stylesheet" href="controlgroup.css">
+  <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
+  <link rel="stylesheet" href="jQueryUI-autocomplete-bootstrap-master/jqueryui-autocomplete-bootstrap.css" type="text/css" media="all">
+  <script src="jquery-ui/external/jquery/jquery.js"></script>
+  <script src="jquery-ui/jquery-ui.js"></script>
+  <script>
+    $( function() {
+        $( "#dialog" ).dialog();
+    	$( "#reference_datepicker" ).datepicker({defaultDate: new Date()});
+    	$( "#distant_datepicker" ).datepicker({defaultDate: new Date()});
+    	$( ".controlgroup" ).controlgroup()
+    	$( ".controlgroup-vertical" ).controlgroup({
+    	  "direction": "vertical"
+    	});
+  } );
+   function initDate() {return new Date();}
+  </script>
+
+
+</head>
+
+
+<body>
+ <table>
+  <tr>
+   <td>
+	<div class="widget">
+	  <h1>DST - Synthèse</h1>
+	  <fieldset>
+	    <legend>Référence</legend>
+	    <div class="controlgroup">
+		 <input
+			class="bs-autocomplete"
+			id="reference_pays_HTML"
+			value=""
+			placeholder=""
+			type="text"
+			data-source="http://localhost:3000/zonesListAutocomplete"
+			data-hidden_field_id="id"
+			data-item_id="id"
+			data-item_label="nom"
+			autocomplete="off"
+			size="35"
+		  >
+		<input type="text" size="5" id="reference_heures" value ="23:59" name="reference_heures">
+		<input type="text" size="10" id="reference_datepicker" value ="01/01/2018" name="reference_datepicker">
+	    </div>
+	  </fieldset>
+	</div>
+    </td>
+   </tr>
+   <tr>
+    <td>
+	  <fieldset>
+	    <div class="widget">
+	    <legend>Distant</legend>
+	    <div class="controlgroup">
+			<input
+				class="bs-autocomplete"
+				id="distant_pays_HTML"
+				value=""
+				placeholder=""
+				type="text"
+				data-source="http://localhost:3000/zonesListAutocomplete"
+				data-hidden_field_id="id"
+				data-item_id="id"
+				data-item_label="nom"
+				autocomplete="off"
+				size="35"
+		>
+	      <input type="text" size="5" id="distant_heures" value ="23:59" name="distant_heures">
+	      <input type="text" size="10" id="distant_datepicker" value ="01/01/2018" name="distant_datepicker">
+	    </div>
+	</fieldset>
+      </div>
+    </td>
+   </tr>
+ </table>
+
+<div id="dialog" title="Basic dialog">
+  <p>This is the default dialog which is useful for displaying information. The dialog window can be moved, resized and closed with the 'x' icon.</p>
+</div>
+
+ <script type="text/javascript" src="jQueryUI-autocomplete-bootstrap-master/jqueryui-autocomplete-bootstrap-min.js"></script>
+
+</body>
+
+</html>

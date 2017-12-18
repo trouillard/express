@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+
+<html ng-app="app">
+
+  <head>
+
+    <title><%= title %></title>
+
+    <link rel='stylesheet' href='/css/style.css' />
+
+  </head>
+
+  <body>
+
+    <h1><%= title %></h1>
+
+    <ng-view></ng-view>
+
+    <!-- Libraries -->
+
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.25/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.25/angular-route.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.25/angular-resource.min.js"></script>
+
+    <!-- Template -->
+
+    <script type="text/ng-template" id="/zones.html">
+
+      Search: <input type="text" ng-model="search.nom">
+
+      <ul>
+        <li ng-repeat="zone in zones | filter: search">
+          <a ng-show="!editing[$index]" href="zones/{{zone.id}}">{{zone.nom}}</a>
+          <button ng-show="!editing[$index]" ng-click="edit($index)">edit</button>
+          <input ng-show="editing[$index]" type="text" ng-model="zone.name">
+          <button ng-show="editing[$index]" ng-click="update($index)">Update</button>
+          <button ng-show="editing[$index]" ng-click="cancel($index)">Cancel</button>
+          <button ng-show="!editing[$index]" ng-click="remove($index)">remove</button>
+        </li>
+      </ul>
+
+      New task <input type="text" ng-model="newZone"><button ng-click="save()">Create</button>
+
+    </script>
+
+    <script type="text/ng-template" id="/zoneDetails.html">
+
+      <h1>{{ zone.nom }}</h1>
+      <button ng-click="update()">Update</button>
+      <button ng-click="remove()">Remove</button>
+      <a href="/">Cancel</a>
+
+    </script>
+
+    <script>
+
+      angular.module('app', ['ngRoute', 'ngResource'])
+
+        // SERVICES
+
+        .factory('Zones', ['$resource', function($resource){
+          return $resource('rest/zones/:id', null, {
+            'update': { method:'PUT' }
+          });
+        }])
+
+        // CONTROLLERS
+
+        .controller('ZoneController', ['$scope', 'Zones', function ($scope, Zones) {
+          $scope.editing = [];
+          $scope.zones = Zones.query();
+          $scope.save = function(){
+									if(!$scope.newZone || $scope.newZone.length < 1) return;
+									var zone = new Zones({ name: $scope.newZone, completed: false });
+									zone.$save(function(){
+									  $scope.zones.push(zone);
+									  $scope.newZone = ''; // clear textbox
+									});
+          }
+
+          $scope.update = function(index){
+            var zone = $scope.zones[index];
+            Zones.update({id: zone._id}, zone);
+            $scope.editing[index] = false;
+          }
+
+          $scope.edit = function(index){
+            $scope.editing[index] = angular.copy($scope.zones[index]);
+          }
+
+          $scope.cancel = function(index){
+            $scope.zones[index] = angular.copy($scope.editing[index]);
+            $scope.editing[index] = false;
+          }
+
+          $scope.remove = function(index){
+            var zone = $scope.zones[index];
+            Zones.remove({id: zone._id}, function(){
+              $scope.zones.splice(index, 1);
+            });
+          }
+
+        }])
+
+        .controller('ZoneDetailCtrl', ['$scope', '$routeParams', 'Zones', '$location', function ($scope, $routeParams, Zones, $location) {
+          $scope.zone = Zones.get({id: $routeParams.id });
+          $scope.remove = function(){
+            Zones.remove({id: $scope.Zone.id}, function(){
+              $location.url('/zones/:id');
+            });
+          }
+        }])
+
+        // ROUTES ANGULAR
+
+        .config(['$routeProvider', function ($routeProvider) {
+
+          $routeProvider
+
+            .when('/', {
+              templateUrl: '/zones.html',
+              controller: 'ZoneController'
+            })
+
+            .when('/:id', {
+              templateUrl: '/zoneDetails.html',
+              controller: 'ZoneDetailCtrl'
+           });
+
+        }]);
+
+    </script>
+
+  </body>
+
+</html>
